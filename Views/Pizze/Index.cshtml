@@ -26,9 +26,12 @@
 						</div>
 						<img src="@pizza.ImgPath" class="card-img-top" alt="pizza">
 						<div class="card-text">@pizza.Price</div>
-						<div class="text-center py-2">
-							<a class="btn btn-primary" asp-controller="Pizze" asp-action="Edit" asp-route-id="@pizza.PizzaId">Edit</a>
-							<a class="btn btn-danger">Delete</a>
+						<div class="d-flex justify-content-center py-2 align-item-center">
+							<a class="btn btn-primary me-2" asp-controller="Pizze" asp-action="Edit" asp-route-id="@pizza.PizzaId">Edit</a>
+							<form asp-controller="Pizze" asp-action="Delete" asp-route-id="@pizza.PizzaId" method="post">
+								@Html.AntiForgeryToken()
+								<button class="btn btn-danger">Delete</button>
+							</form>
 						</div>
 					</div>
 				</div>
