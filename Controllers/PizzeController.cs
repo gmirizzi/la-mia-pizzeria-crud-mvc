@@ -55,6 +55,7 @@ namespace la_mia_pizzeria_static.Controllers
             }
         }
 
+        [HttpGet]
         public IActionResult Edit(int id)
         {
             using (PizzeriaContext db = new PizzeriaContext())
@@ -69,6 +70,39 @@ namespace la_mia_pizzeria_static.Controllers
                 {
                     return View(current);
                 }
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, Pizza pizza)
+        {
+            pizza.PizzaId = id;
+            if (!ModelState.IsValid)
+            {
+                return View("Edit", pizza);
+            }
+            else
+            {
+                using (PizzeriaContext db = new PizzeriaContext())
+                {
+                    Pizza current = db.Pizzas.Find(id);
+
+                    if (current == null)
+                    {
+                        return NotFound($"La pizza con id {id} non è stato trovato");
+                    }
+                    else
+                    {
+                        current.Name = pizza.Name;
+                        current.Description = pizza.Description;
+                        current.ImgPath = pizza.ImgPath;
+                        current.Price = pizza.Price;
+                        db.SaveChanges();
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
+
             }
         }
     }
