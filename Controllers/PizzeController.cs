@@ -57,7 +57,19 @@ namespace la_mia_pizzeria_static.Controllers
 
         public IActionResult Edit(int id)
         {
-            return View();
+            using (PizzeriaContext db = new PizzeriaContext())
+            {
+                Pizza current = db.Pizzas.Find(id);
+
+                if (current == null)
+                {
+                    return NotFound($"La pizza con id {id} non è stato trovato");
+                }
+                else
+                {
+                    return View(current);
+                }
+            }
         }
     }
 }
