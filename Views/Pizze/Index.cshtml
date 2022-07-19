@@ -1,0 +1,39 @@
+﻿@{
+	ViewData["Title"] = "Menu";
+}
+
+@model List<Pizza>
+
+<div class="container text-center">
+	<h1 class="display-4">Menu</h1>
+	<p>In GTA San Andreas, the player is given a choice of four different meals at Well Stacked Pizza restaurants. All of the food choices besides the salad are references to breasts: "Buster" is from the word "bust", a word for breasts, or it could be a reference to Ryder's catchphrase. "Double D-Luxe" is from DD, the bra size, and having a "Full Rack" is slang for a woman with large, well-shaped breasts. In Las Venturas, the pricing of the Double D-Luxe, Full Rack and Salad Meal are 20% higher than in the rest of the state.</p>
+	@if (Model.Count() == 0)
+	{
+		<div class="w-100">Non ci sono pizze nella lista</div>
+	}
+	else
+	{
+		<div class="row row-cols-3 gy-3">
+			@foreach (Pizza pizza in Model)
+			{
+				<div class="col">
+					<div class="card h-100">
+						<div class="card-body">
+							<a href="@Url.Action("details","pizze", new {id = pizza.PizzaId})">
+								<h5 class="card-title">@pizza.Name</h5>
+							</a>
+							<p class="card-text">@pizza.Description</p>
+						</div>
+						<img src="@pizza.ImgPath" class="card-img-top" alt="pizza">
+						<div class="card-text">@pizza.Price</div>
+						<div class="text-center py-2">
+							<a class="btn btn-primary" asp-controller="Pizze" asp-action="Edit" asp-route-id="@pizza.PizzaId">Edit</a>
+							<a class="btn btn-danger">Delete</a>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+	}
+	<a class="btn btn-primary mt-3" asp-controller="Pizze" asp-action="Create">Aggiungi una nuova pizza</a>
+</div>

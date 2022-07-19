@@ -1,0 +1,42 @@
+﻿@{
+	ViewData["Title"] = "Dove siamo";
+}
+
+@model List<Location>
+
+@{
+	List<string> states = new List<string>();
+	foreach (Location location in Model)
+	{
+		if (!states.Contains(location.State))
+			states.Add(location.State);
+	}
+}
+
+<div class="container text-center">
+	<h1>Locations</h1>
+	@if (Model.Count() == 0)
+	{
+		<div class="w-100">Non ci sono locations nella lista</div>
+	}
+	else
+	{
+		@foreach (string state in states)
+		{
+			<section class="text-start">
+				<h2>@state</h2>
+				<div class="row row-cols-3 gy-3">
+					@foreach (Location location in Model.Where(e => e.State == state))
+					{
+						<div class="col">
+							<div class="card text-center">
+								<h5 class="card-title">@location.Name</h5>
+								<img src="@location.ImgPath" class="card-img-top" alt="location">
+							</div>
+						</div>
+					}
+				</div>
+			</section>
+		}
+	}
+</div>
