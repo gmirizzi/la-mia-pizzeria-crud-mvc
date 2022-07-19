@@ -1,5 +1,6 @@
 ﻿using la_mia_pizzeria_static.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace la_mia_pizzeria_static.Controllers
 {
@@ -19,7 +20,7 @@ namespace la_mia_pizzeria_static.Controllers
         {
             using (PizzeriaContext db = new PizzeriaContext())
             {
-                Pizza current = db.Pizzas.Find(id);
+                Pizza current = db.Pizzas.Where(p => p.PizzaId == id).Include(p => p.Category).FirstOrDefault();
 
                 if (current == null)
                 {
@@ -41,11 +42,12 @@ namespace la_mia_pizzeria_static.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Pizza pizza)
-        {   
+        {
             if (!ModelState.IsValid)
             {
                 return View("Create", pizza);
-            } else
+            }
+            else
             {
                 PizzeriaContext db = new PizzeriaContext();
                 db.Pizzas.Add(pizza);
