@@ -9,4 +9,9 @@
 	<img src="@Model.ImgPath"/>
 	<div>@Model.Price</div>
 	<p>@Model.Description</p>
+	<div>@if (Model.Category!=null)
+		{
+			@Model.Category.Name
+		}
+	</div>
 </div>

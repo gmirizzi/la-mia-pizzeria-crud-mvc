@@ -2,6 +2,14 @@
 	ViewData["Title"] = "Add a new pizza";
 }
 
+@{
+	List<Category> categories = new List<Category>();
+	using (PizzeriaContext db = new PizzeriaContext())
+	{
+		categories = db.Categories.ToList<Category>();
+	}
+}
+
 @model Pizza
 
 <div class="container">
@@ -27,6 +35,15 @@
 			<label for="price" class="form-label">Prezzo</label>
 			<input type="text" class="form-control" id="price" asp-for="Price">
 			<span asp-validation-for="Price" class="text-danger"></span>
+		</div>
+		<div class="mb-3">
+			<label for="category" class="form-label">Categoria</label>
+			<select class="form-control" id="category" asp-for="CategoryId">
+				@foreach (Category category in categories)
+				{
+					<option value="@category.CategoryId">@category.Name</option>
+				}
+			</select>
 		</div>
 		<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
