@@ -62,7 +62,7 @@ namespace la_mia_pizzeria_static.Controllers
         {
             using (PizzeriaContext db = new PizzeriaContext())
             {
-                Pizza current = db.Pizzas.Find(id);
+                Pizza current = db.Pizzas.Where(p => p.PizzaId == id).Include(p => p.Category).FirstOrDefault();
 
                 if (current == null)
                 {
@@ -80,6 +80,7 @@ namespace la_mia_pizzeria_static.Controllers
         public IActionResult Edit(int id, Pizza pizza)
         {
             pizza.PizzaId = id;
+            
             if (!ModelState.IsValid)
             {
                 return View("Edit", pizza);
@@ -88,7 +89,7 @@ namespace la_mia_pizzeria_static.Controllers
             {
                 using (PizzeriaContext db = new PizzeriaContext())
                 {
-                    Pizza current = db.Pizzas.Find(id);
+                    Pizza current = db.Pizzas.Where(p => p.PizzaId == id).Include(p => p.Category).FirstOrDefault();
 
                     if (current == null)
                     {
@@ -100,6 +101,7 @@ namespace la_mia_pizzeria_static.Controllers
                         current.Description = pizza.Description;
                         current.ImgPath = pizza.ImgPath;
                         current.Price = pizza.Price;
+                        current.CategoryId = pizza.CategoryId;
                         db.SaveChanges();
                         return RedirectToAction(nameof(Index));
                     }
