@@ -10,6 +10,14 @@
 	}
 }
 
+@{
+	List<Ingredient> ingredients = new List<Ingredient>();
+	using (PizzeriaContext db = new PizzeriaContext())
+	{
+		ingredients = db.Ingredients.ToList<Ingredient>();
+	}
+}
+
 @model Pizza
 
 <div class="container">
@@ -38,10 +46,19 @@
 		</div>
 		<div class="mb-3">
 			<label for="category" class="form-label">Categoria</label>
-			<select class="form-control" id="category" asp-for="CategoryId">
+			<select class="form-select" id="category" asp-for="CategoryId">
 				@foreach (Category category in categories)
 				{
 					<option value="@category.CategoryId">@category.Name</option>
+				}
+			</select>
+		</div>
+		<div class="mb-3">
+			<label for="ingredients" class="form-label">Ingredienti</label>
+			<select class="form-select" id="ingredients" multiple>
+				@foreach (Ingredient ingredient in ingredients)
+				{
+					<option value="@ingredient.IngredientId" name="@ingredient.Name">@ingredient.Name</option>
 				}
 			</select>
 		</div>
