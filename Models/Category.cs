@@ -11,6 +11,6 @@ namespace la_mia_pizzeria_static.Models
 		[Required]
 		[StringLength(20)]
 		public string Name { get; set; }
-		public List<Pizza> PizzasList { get; set; }
+		public List<Pizza>? PizzasList { get; set; }
 	}
 }

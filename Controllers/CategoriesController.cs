@@ -25,15 +25,19 @@ namespace la_mia_pizzeria_static.Controllers
 		// POST: CategoriesController/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Create(IFormCollection collection)
+		public ActionResult Create(Category category)
 		{
-			try
+			if (!ModelState.IsValid)
 			{
-				return RedirectToAction(nameof(Index));
+				return View("Create", category);
 			}
-			catch
+			else
 			{
-				return View();
+				PizzeriaContext db = new PizzeriaContext();
+				db.Categories.Add(category);
+				db.SaveChanges();
+
+				return RedirectToAction(nameof(Index));
 			}
 		}
 
