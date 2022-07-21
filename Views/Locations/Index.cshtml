@@ -23,7 +23,7 @@
 	{
 		@foreach (string state in states)
 		{
-			<section class="text-start">
+			<section class="text-start mb-3">
 				<h2>@state</h2>
 				<div class="row row-cols-3 gy-3">
 					@foreach (Location location in Model.Where(e => e.State == state))

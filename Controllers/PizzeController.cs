@@ -41,16 +41,22 @@ namespace la_mia_pizzeria_static.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Pizza pizza)
+        public IActionResult Create(PizzaViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View("Create", pizza);
+                return View("Create", model);
             }
             else
             {
                 PizzeriaContext db = new PizzeriaContext();
-                db.Pizzas.Add(pizza);
+                model.Pizza.IngredientsList = new List<Ingredient>();
+                foreach (string ingredientId in model.SelectedIngredients)
+                {
+                    Ingredient ingredient = db.Ingredients.Find(int.Parse(ingredientId));
+                    model.Pizza.IngredientsList.Add(ingredient);
+                }
+                db.Pizzas.Add(model.Pizza);
                 db.SaveChanges();
 
                 return RedirectToAction(nameof(Index));
@@ -70,20 +76,22 @@ namespace la_mia_pizzeria_static.Controllers
                 }
                 else
                 {
-                    return View(current);
+                    PizzaViewModel newModel = new PizzaViewModel();
+                    newModel.Pizza = current;
+                    return View(newModel);
                 }
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Pizza pizza)
+        public IActionResult Edit(int id, PizzaViewModel model)
         {
-            pizza.PizzaId = id;
+            model.Pizza.PizzaId = id;
             
             if (!ModelState.IsValid)
             {
-                return View("Edit", pizza);
+                return View("Edit", model);
             }
             else
             {
@@ -97,11 +105,11 @@ namespace la_mia_pizzeria_static.Controllers
                     }
                     else
                     {
-                        current.Name = pizza.Name;
-                        current.Description = pizza.Description;
-                        current.ImgPath = pizza.ImgPath;
-                        current.Price = pizza.Price;
-                        current.CategoryId = pizza.CategoryId;
+                        current.Name = model.Pizza.Name;
+                        current.Description = model.Pizza.Description;
+                        current.ImgPath = model.Pizza.ImgPath;
+                        current.Price = model.Pizza.Price;
+                        current.CategoryId = model.Pizza.CategoryId;
                         db.SaveChanges();
                         return RedirectToAction(nameof(Index));
                     }

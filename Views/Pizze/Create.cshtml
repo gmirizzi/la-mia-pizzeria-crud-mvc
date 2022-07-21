@@ -12,13 +12,18 @@
 
 @{
 	List<Ingredient> ingredients = new List<Ingredient>();
+	List<SelectListItem> selectOptions = new List<SelectListItem>();
 	using (PizzeriaContext db = new PizzeriaContext())
 	{
 		ingredients = db.Ingredients.ToList<Ingredient>();
 	}
+	foreach (Ingredient item in ingredients)
+	{
+		selectOptions.Add(new SelectListItem { Value = @item.IngredientId.ToString(), Text = @item.Name });
+	}
 }
 
-@model Pizza
+@model PizzaViewModel
 
 <div class="container">
 	<h1 class="mb-3">Aggiungi una nuova pizza</h1>
@@ -26,27 +31,27 @@
 		@Html.AntiForgeryToken()
 		<div class="mb-3">
 			<label for="pizza-name" class="form-label">Name</label>
-			<input type="text" asp-for="Name" class="form-control" id="pizza-name">
-			<span asp-validation-for="Name" class="text-danger"></span>
+			<input type="text" asp-for="Pizza.Name" class="form-control" id="pizza-name">
+			<span asp-validation-for="Pizza.Name" class="text-danger"></span>
 		</div>
 		<div class="mb-3">
 			<label for="pizza-description" class="form-label">Descrizione</label>
-			<textarea id="pizza-description" class="form-control" asp-for="Description"></textarea>
-			<span asp-validation-for="Description" class="text-danger"></span>
+			<textarea id="pizza-description" class="form-control" asp-for="Pizza.Description"></textarea>
+			<span asp-validation-for="Pizza.Description" class="text-danger"></span>
 		</div>
 		<div class="mb-3">
 			<label for="img-path" class="form-label">Image Path</label>
-			<input type="url" class="form-control" id="img-path" asp-for="ImgPath">
-			<span asp-validation-for="ImgPath" class="text-danger"></span>
+			<input type="url" class="form-control" id="img-path" asp-for="Pizza.ImgPath">
+			<span asp-validation-for="Pizza.ImgPath" class="text-danger"></span>
 		</div>
 		<div class="mb-3">
 			<label for="price" class="form-label">Prezzo</label>
-			<input type="text" class="form-control" id="price" asp-for="Price">
-			<span asp-validation-for="Price" class="text-danger"></span>
+			<input type="text" class="form-control" id="price" asp-for="Pizza.Price">
+			<span asp-validation-for="Pizza.Price" class="text-danger"></span>
 		</div>
 		<div class="mb-3">
 			<label for="category" class="form-label">Categoria</label>
-			<select class="form-select" id="category" asp-for="CategoryId">
+			<select class="form-select" id="category" asp-for="Pizza.CategoryId">
 				@foreach (Category category in categories)
 				{
 					<option value="@category.CategoryId">@category.Name</option>
@@ -55,12 +60,7 @@
 		</div>
 		<div class="mb-3">
 			<label for="ingredients" class="form-label">Ingredienti</label>
-			<select class="form-select" id="ingredients" multiple>
-				@foreach (Ingredient ingredient in ingredients)
-				{
-					<option value="@ingredient.IngredientId" name="@ingredient.Name">@ingredient.Name</option>
-				}
-			</select>
+			<select class="form-select" id="ingredients" multiple asp-for="SelectedIngredients" asp-items="selectOptions"></select>
 		</div>
 		<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
