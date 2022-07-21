@@ -16,12 +16,6 @@ namespace la_mia_pizzeria_static.Controllers
 			}
 		}
 
-		// GET: CategoriesController/Details/5
-		public ActionResult Details(int id)
-		{
-			return View();
-		}
-
 		// GET: CategoriesController/Create
 		public ActionResult Create()
 		{
