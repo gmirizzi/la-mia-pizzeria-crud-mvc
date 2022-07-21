@@ -68,7 +68,7 @@ namespace la_mia_pizzeria_static.Controllers
         {
             using (PizzeriaContext db = new PizzeriaContext())
             {
-                Pizza current = db.Pizzas.Where(p => p.PizzaId == id).Include(p => p.Category).FirstOrDefault();
+                Pizza current = db.Pizzas.Where(p => p.PizzaId == id).Include(p => p.Category).Include(p => p.IngredientsList).FirstOrDefault();
 
                 if (current == null)
                 {
@@ -77,6 +77,11 @@ namespace la_mia_pizzeria_static.Controllers
                 else
                 {
                     PizzaViewModel newModel = new PizzaViewModel();
+                    newModel.SelectedIngredients = new List<string>();
+                    foreach (Ingredient ingredient in current.IngredientsList)
+                    {
+                        newModel.SelectedIngredients.Add(ingredient.IngredientId.ToString());
+                    }
                     newModel.Pizza = current;
                     return View(newModel);
                 }
@@ -97,7 +102,7 @@ namespace la_mia_pizzeria_static.Controllers
             {
                 using (PizzeriaContext db = new PizzeriaContext())
                 {
-                    Pizza current = db.Pizzas.Where(p => p.PizzaId == id).Include(p => p.Category).FirstOrDefault();
+                    Pizza current = db.Pizzas.Where(p => p.PizzaId == id).Include(p => p.Category).Include(p => p.IngredientsList).FirstOrDefault();
 
                     if (current == null)
                     {
@@ -110,6 +115,12 @@ namespace la_mia_pizzeria_static.Controllers
                         current.ImgPath = model.Pizza.ImgPath;
                         current.Price = model.Pizza.Price;
                         current.CategoryId = model.Pizza.CategoryId;
+                        current.IngredientsList.Clear();
+                        foreach (string ingredientId in model.SelectedIngredients)
+                        {
+                            Ingredient ingredient = db.Ingredients.Find(int.Parse(ingredientId));
+                            current.IngredientsList.Add(ingredient);
+                        }
                         db.SaveChanges();
                         return RedirectToAction(nameof(Index));
                     }
