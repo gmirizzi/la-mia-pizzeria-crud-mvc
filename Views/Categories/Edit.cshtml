@@ -1,0 +1,18 @@
+﻿@{
+	ViewData["Title"] = "Edit";
+}
+
+@model Category
+
+<div class="container">
+	<h1 class="mb-3">Modifica categoria</h1>
+	<form asp-controller="Categories" asp-action="Edit" method="post">
+		@Html.AntiForgeryToken()
+		<div class="mb-3">
+			<label for="category-name" class="form-label">Name</label>
+			<input type="text" asp-for="Name" class="form-control" id="category-name">
+			<span asp-validation-for="Name" class="text-danger"></span>
+		</div>
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</form>
+</div>

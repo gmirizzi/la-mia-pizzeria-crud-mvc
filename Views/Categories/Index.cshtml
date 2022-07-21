@@ -21,7 +21,7 @@
 					<th scope="row">@category.CategoryId</th>
 					<td>@category.Name</td>
 					<td>
-						<a class="btn btn-primary me-2" asp-controller="Categories" asp-action="Edit">Edit</a>
+						<a class="btn btn-primary me-2" asp-controller="Categories" asp-action="Edit" asp-route-id="@category.CategoryId">Edit</a>
 						<a class="btn btn-danger" asp-controller="Categories" asp-action="Delete">Delete</a>
 					</td>
 				</tr>

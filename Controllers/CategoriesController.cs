@@ -44,13 +44,25 @@ namespace la_mia_pizzeria_static.Controllers
 		// GET: CategoriesController/Edit/5
 		public ActionResult Edit(int id)
 		{
-			return View();
+			using (PizzeriaContext db = new PizzeriaContext())
+			{
+				Category current = db.Categories.Find(id);
+
+				if (current == null)
+				{
+					return NotFound($"La pizza con id {id} non è stato trovato");
+				}
+				else
+				{
+					return View(current);
+				}
+			}
 		}
 
 		// POST: CategoriesController/Edit/5
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Edit(int id, IFormCollection collection)
+		public ActionResult Edit(int id, Category category)
 		{
 			try
 			{
