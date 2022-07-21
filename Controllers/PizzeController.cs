@@ -24,7 +24,7 @@ namespace la_mia_pizzeria_static.Controllers
 
                 if (current == null)
                 {
-                    return NotFound($"La pizza con id {id} non è stato trovato");
+                    return NotFound($"La pizza con id {id} non è stato trovata");
                 }
                 else
                 {
@@ -72,7 +72,7 @@ namespace la_mia_pizzeria_static.Controllers
 
                 if (current == null)
                 {
-                    return NotFound($"La pizza con id {id} non è stato trovato");
+                    return NotFound($"La pizza con id {id} non è stato trovata");
                 }
                 else
                 {
@@ -106,7 +106,7 @@ namespace la_mia_pizzeria_static.Controllers
 
                     if (current == null)
                     {
-                        return NotFound($"La pizza con id {id} non è stato trovato");
+                        return NotFound($"La pizza con id {id} non è stato trovata");
                     }
                     else
                     {
@@ -139,7 +139,7 @@ namespace la_mia_pizzeria_static.Controllers
 
                 if (current == null)
                 {
-                    return NotFound($"La pizza con id {id} non è stato trovato");
+                    return NotFound($"La pizza con id {id} non è stato trovata");
                 }
                 else
                 {

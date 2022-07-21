@@ -50,7 +50,7 @@ namespace la_mia_pizzeria_static.Controllers
 
 				if (current == null)
 				{
-					return NotFound($"La pizza con id {id} non è stato trovato");
+					return NotFound($"La categoria con id {id} non è stato trovata");
 				}
 				else
 				{
@@ -64,13 +64,30 @@ namespace la_mia_pizzeria_static.Controllers
 		[ValidateAntiForgeryToken]
 		public ActionResult Edit(int id, Category category)
 		{
-			try
+			category.CategoryId = id;
+
+			if (!ModelState.IsValid)
 			{
-				return RedirectToAction(nameof(Index));
+				return View("Edit", category);
 			}
-			catch
+			else
 			{
-				return View();
+				using (PizzeriaContext db = new PizzeriaContext())
+				{
+					Category current = db.Categories.Find(id);
+
+					if (current == null)
+					{
+						return NotFound($"La categoria con id {id} non è stato trovata");
+					}
+					else
+					{
+						current.Name = category.Name;
+						db.SaveChanges();
+						return RedirectToAction(nameof(Index));
+					}
+				}
+
 			}
 		}
 
