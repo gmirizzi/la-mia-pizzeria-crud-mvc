@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using la_mia_pizzeria_static.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace la_mia_pizzeria_static.Controllers
@@ -6,9 +7,13 @@ namespace la_mia_pizzeria_static.Controllers
 	public class CategoriesController : Controller
 	{
 		// GET: CategoriesController
-		public ActionResult Index()
+		public IActionResult Index()
 		{
-			return View();
+			using (PizzeriaContext db = new PizzeriaContext())
+			{
+				List<Category> categoriresList = db.Categories.ToList<Category>();
+				return View(categoriresList);
+			}
 		}
 
 		// GET: CategoriesController/Details/5
