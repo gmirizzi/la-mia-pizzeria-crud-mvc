@@ -20,9 +20,12 @@
 				<tr>
 					<th scope="row">@category.CategoryId</th>
 					<td>@category.Name</td>
-					<td>
+					<td class="d-flex">
 						<a class="btn btn-primary me-2" asp-controller="Categories" asp-action="Edit" asp-route-id="@category.CategoryId">Edit</a>
-						<a class="btn btn-danger" asp-controller="Categories" asp-action="Delete">Delete</a>
+						<form asp-controller="Categories" asp-action="Delete" asp-route-id="@category.CategoryId" method="post">
+							@Html.AntiForgeryToken()
+							<button class="btn btn-danger">Delete</button>
+						</form>
 					</td>
 				</tr>
 			}

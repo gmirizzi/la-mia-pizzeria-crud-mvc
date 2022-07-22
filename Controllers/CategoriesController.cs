@@ -1,6 +1,7 @@
 ﻿using la_mia_pizzeria_static.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace la_mia_pizzeria_static.Controllers
 {
@@ -92,23 +93,30 @@ namespace la_mia_pizzeria_static.Controllers
 		}
 
 		// GET: CategoriesController/Delete/5
-		public ActionResult Delete(int id)
-		{
-			return View();
-		}
+		//public ActionResult Delete(int id)
+		//{
+		//	return View();
+		//}
 
 		// POST: CategoriesController/Delete/5
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public ActionResult Delete(int id, IFormCollection collection)
+		public ActionResult Delete(int id)
 		{
-			try
+			using (PizzeriaContext db = new PizzeriaContext())
 			{
-				return RedirectToAction(nameof(Index));
-			}
-			catch
-			{
-				return View();
+				Category current = db.Categories.Where(c => c.CategoryId == id).Include(c => c.PizzasList).FirstOrDefault();
+
+				if (current == null)
+				{
+					return NotFound($"La categoria con id {id} non è stato trovata");
+				}
+				else
+				{
+					db.Remove(current);
+					db.SaveChanges();
+					return RedirectToAction(nameof(Index));
+				}
 			}
 		}
 	}
